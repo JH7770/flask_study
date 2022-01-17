@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services import user, tweet
+from services.auth import login_required
 
 bp = Blueprint("user", __name__, url_prefix="/")
 
@@ -17,6 +18,7 @@ def sign_up():
 
 
 @bp.route('/tweet', methods=['POST'])
+@login_required
 def tweet():
     """
     Tweet Upload

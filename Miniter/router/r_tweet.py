@@ -1,10 +1,12 @@
 from flask import Blueprint, request, jsonify
 from services import tweet
+from services.auth import login_required
 
 bp = Blueprint("tweet", __name__, url_prefix="/")
 
 
 @bp.route('/follow', methods=['POST'])
+@login_required
 def follow():
     """
     User Follow
@@ -20,6 +22,7 @@ def follow():
 
 
 @bp.route('/unfollow', methods=['POST'])
+@login_required
 def unfollow():
     """
     User UnFollow
@@ -35,6 +38,7 @@ def unfollow():
 
 
 @bp.route('/timeline/<int:user_id>', methods=['GET'])
+@login_required
 def timeline(user_id):
     """
     timeline을 받아옴

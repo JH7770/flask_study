@@ -4,7 +4,7 @@ app = create_app()
 
 
 @app.route('/ping', methods=['GET'])
-def hello_world():  
+def hello_world():
     return 'pong'
 
 
