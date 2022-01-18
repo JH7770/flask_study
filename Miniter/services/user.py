@@ -34,3 +34,12 @@ def get_user_from_id(user_id):
         'email': row['email'],
         'profile': row['profile']
     } if row else None
+
+def get_user_from_email(email):
+    return current_app.database.execute(text("""
+        SELECT 
+            id,
+            hashed_password
+        FROM users
+        WHERE email =:email
+    """), {'email':email).fetchone()

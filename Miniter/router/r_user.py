@@ -1,4 +1,9 @@
+import bcrypt
+import jwt
+from datetime import datetime, timedelta
+
 from flask import Blueprint, request, jsonify
+from flask import current_app
 from services import user, tweet
 from services.auth import login_required
 
@@ -11,29 +16,39 @@ def sign_up():
     :return: 생성된 유저 정보
     """
     new_user = request.json
+    new_user['password'] = bcrypt.hashpw(
+        new_user['password'].encode('UTF-8'), bcrypt.gensalt()
+    )
     new_user_id = user.insert_user(new_user)
     created_user = user.get_user_from_id(new_user_id)
     return jsonify(created_user)
 
 
 
-@bp.route('/tweet', methods=['POST'])
-@login_required
-def tweet():
-    """
-    Tweet Upload
-    :return: 성공 여부(status)
-    """
-    user_tweet = request.json
-    tweet_content = user_tweet['tweet']
+@bp.route('login', methods=['POST'])
+def login():
+    credential = request.json
+    email = credential['email']
+    password = credential['password']
 
-    if len(tweet_content) > 300:
-        return '300자를 초과했습니다.', 400
+    row = user.get_user_from_email(email)
 
-    try:
-        tweet.insert_tweet(user_tweet)
-    except Exception as e:
-        print(e)
-        return 'insert tweet error', 400
-    return '', 200
+    if row and bcrypt.checkpw(password.encode('UTF-8'),
+          row['hashed_password'].encode('UTF-8')):
+        user_id = row['id']
+        payload = {
+            'user_id': user_id,
+            'exp': datetime.utcnow() + timedelta(seconds=60*60*24) # expire 1 day
+        }
+        token = jwt.encode(payload, current_app.config['JWT_SECRET_KEY'], 'HS256')
+
+        return jsonify({
+            'access_token': token.decode('UTF-8')
+        })
+    else:
+        return '', 401
+    
+
+
+
 

@@ -4,6 +4,26 @@ from services.auth import login_required
 
 bp = Blueprint("tweet", __name__, url_prefix="/")
 
+@bp.route('/tweet', methods=['POST'])
+@login_required
+def tweet():
+    """
+    Tweet Upload
+    :return: 성공 여부(status)
+    """
+    user_tweet = request.json
+    tweet_content = user_tweet['tweet']
+
+    if len(tweet_content) > 300:
+        return '300자를 초과했습니다.', 400
+
+    try:
+        tweet.insert_tweet(user_tweet)
+    except Exception as e:
+        print(e)
+        return 'insert tweet error', 400
+    return '', 200
+
 
 @bp.route('/follow', methods=['POST'])
 @login_required
