@@ -13,7 +13,7 @@ def insert_user(new_user):
         :profile,
         :password
         )
-    """), new_user).lastrowid보
+    """), new_user).lastrowid
 
 def get_user_from_id(user_id):
     row = current_app.database.execute(text("""
@@ -42,4 +42,4 @@ def get_user_from_email(email):
             hashed_password
         FROM users
         WHERE email =:email
-    """), {'email':email).fetchone()
+    """), {'email':email}).fetchone()

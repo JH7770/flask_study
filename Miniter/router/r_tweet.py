@@ -1,17 +1,18 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 from services import tweet
 from services.auth import login_required
 
-bp = Blueprint("tweet", __name__, url_prefix="/")
+bp = Blueprint("tweet", __name__, url_prefix="/tweet")
 
 @bp.route('/tweet', methods=['POST'])
 @login_required
-def tweet():
+def _tweet():
     """
     Tweet Upload
     :return: 성공 여부(status)
     """
     user_tweet = request.json
+    user_tweet['id'] = g.user_id
     tweet_content = user_tweet['tweet']
 
     if len(tweet_content) > 300:
@@ -33,6 +34,9 @@ def follow():
     :return: 성공 여부
     """
     user_follow = request.json
+
+    if 'id' not in user_follow.keys():
+        user_follow['id'] = g.user_id
     try:
         tweet.insert_follow(user_follow)
     except Exception as e:
@@ -57,14 +61,15 @@ def unfollow():
     return '', 200
 
 
-@bp.route('/timeline/<int:user_id>', methods=['GET'])
+@bp.route('/timeline', methods=['GET'])
 @login_required
-def timeline(user_id):
+def timeline():
     """
     timeline을 받아옴
     :param user_id:
     :return:
     """
+    user_id = g.user_id
     time_line = tweet.get_timeline(user_id)
     return jsonify({
         'user_id': user_id,

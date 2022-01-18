@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, current_app
 from flask.json import JSONEncoder
 from sqlalchemy import create_engine, text
-
+from flask_cors import CORS
 from router import blueprints
 
 
@@ -15,6 +15,7 @@ class CustomJSONEncoder(JSONEncoder):
 
 def create_app(test_config=None):
     app = Flask(__name__)
+    CORS(app) # API 도메인 주소와 URL 도메인 주소가 달라서 생기는 문제
 
     # regist config
     if test_config is None:

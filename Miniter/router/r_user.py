@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify
 from flask import current_app
 from services import user, tweet
-from services.auth import login_required
 
-bp = Blueprint("user", __name__, url_prefix="/")
+bp = Blueprint("user", __name__, url_prefix="/user")
+
 
 @bp.route("/sign-up", methods=['POST'])
 def sign_up():
@@ -24,8 +24,7 @@ def sign_up():
     return jsonify(created_user)
 
 
-
-@bp.route('login', methods=['POST'])
+@bp.route('/login', methods=['POST'])
 def login():
     credential = request.json
     email = credential['email']
@@ -34,21 +33,17 @@ def login():
     row = user.get_user_from_email(email)
 
     if row and bcrypt.checkpw(password.encode('UTF-8'),
-          row['hashed_password'].encode('UTF-8')):
+                              row['hashed_password'].encode('UTF-8')):
         user_id = row['id']
         payload = {
             'user_id': user_id,
-            'exp': datetime.utcnow() + timedelta(seconds=60*60*24) # expire 1 day
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # expire 1 day
         }
         token = jwt.encode(payload, current_app.config['JWT_SECRET_KEY'], 'HS256')
 
         return jsonify({
+            'user_id': user_id,
             'access_token': token.decode('UTF-8')
         })
     else:
         return '', 401
-    
-
-
-
-
