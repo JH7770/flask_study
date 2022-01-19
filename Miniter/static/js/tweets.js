@@ -30,7 +30,7 @@ $(document).ready(function () {
 
             if (user_id) {
                 $('.userId')
-                    .append(user_id); 
+                    .append(user_id);
             }
             if (timeline) {
                 timeline.forEach(function (item) {

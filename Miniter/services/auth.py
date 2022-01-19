@@ -2,7 +2,7 @@ import jwt
 
 from functools import wraps
 from flask import request, Response, current_app, g
-
+from datetime import datetime
 from .user import get_user_from_id
 
 
@@ -10,6 +10,9 @@ def check_access_token(access_token):
     try:
         payload = jwt.decode(access_token, current_app.config['JWT_SECRET_KEY'], "HS256")
     except jwt.InvalidTokenError:
+        payload = None
+
+    if payload['exp'] < datetime.utcnow():
         payload = None
     return payload
 
