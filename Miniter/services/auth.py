@@ -11,9 +11,10 @@ def check_access_token(access_token):
         payload = jwt.decode(access_token, current_app.config['JWT_SECRET_KEY'], "HS256")
     except jwt.InvalidTokenError:
         payload = None
-
-    if payload['exp'] < datetime.utcnow():
-        payload = None
+    # print(datetime.fromtimestamp(payload['exp']/1000))
+    # print(datetime.utcnow())
+    # if datetime.fromtimestamp(payload['exp']/1000) < datetime.utcnow():
+    #     payload = None
     return payload
 
 
