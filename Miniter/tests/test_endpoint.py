@@ -1,4 +1,4 @@
-`import os
+import os
 import sys
 import pytest
 import bcrypt
@@ -44,7 +44,7 @@ def setup_function():
     """), new_user)
 
 
-def testdown_function():
+def teardown_function():
     database.execute(text("SET FOREIGN_KEY_CHECKS=0"))
     database.execute(text("TRUNCATE users"))
     database.execute(text("TRUNCATE tweets"))
@@ -96,4 +96,3 @@ def test_tweet(api):
     assert resp.status_code == 200
     tweets = json.loads(resp.data.decode('utf-8'))
     assert tweets['timeline'][0]['tweet'] == 'Hello'
-`
