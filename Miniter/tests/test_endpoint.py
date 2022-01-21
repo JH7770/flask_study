@@ -1,6 +1,7 @@
-import os
+`import os
 import sys
 import pytest
+import bcrypt
 
 from flask import json
 from config import test_config
@@ -25,6 +26,32 @@ def api():  # fixture 함수 이름
     return api
 
 
+def setup_function():
+    # sign up
+    new_user = {
+        'id': 1,
+        'name': "test",
+        'email': 'test@test.test',
+        'profile': 'test'
+    }
+    new_user['hashed_password'] = bcrypt.hashpw(b"test", bcrypt.gensalt())
+    database.execute(text("""
+        INSERT INTO users (
+            id, name, email, profile, hashed_password
+        ) VALUES (
+            :id, :name, :email, :profile, :hashed_password
+        )
+    """), new_user)
+
+
+def testdown_function():
+    database.execute(text("SET FOREIGN_KEY_CHECKS=0"))
+    database.execute(text("TRUNCATE users"))
+    database.execute(text("TRUNCATE tweets"))
+    database.execute(text("TRUNCATE users_follow_list"))
+    database.execute(text("SET FOREIGN_KEY_CHECKS=1"))
+
+
 def test_ping(api):  # 위에서 설정한 fixure를 여기서 사용(인자 api)
     resp = api.get('/ping')
     assert b'pong' in resp.data
@@ -38,16 +65,6 @@ def test_tweet(api):
         'name': "test",
         'profile': 'test'
     }
-    # # sign up
-    # resp = api.post(
-    #     '/user/sign-up',
-    #     data=json.dumps(new_user),
-    #     content_type='application/json'
-    # )
-    # assert resp.status_code == 200
-    #
-    # resp_json = json.loads(resp.data.decode('utf-8'))
-    # new_user_id = resp_json['id']
 
     # login
     resp = api.post(
@@ -73,9 +90,10 @@ def test_tweet(api):
     # tweet 확인
     resp = api.get(
         f'/tweet/timeline',
-       headers={'Authorization': access_token}
+        headers={'Authorization': access_token}
     )
 
     assert resp.status_code == 200
     tweets = json.loads(resp.data.decode('utf-8'))
     assert tweets['timeline'][0]['tweet'] == 'Hello'
+`
