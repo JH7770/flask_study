@@ -96,3 +96,24 @@ def test_tweet(api):
     assert resp.status_code == 200
     tweets = json.loads(resp.data.decode('utf-8'))
     assert tweets['timeline'][0]['tweet'] == 'Hello'
+
+
+def test_follow(api):
+    resp = api.post(
+        '/user/login',
+        data=json.dumps(
+            {'email': 'test@test.test', 'password': 'test'}
+        ),
+        content_type='application/json'
+    )
+    resp_json = json.loads(resp.data.decode('utf-8'))
+    access_token = resp_json['access_token']
+
+    # 사용자 1의 tweet이 비어 잇는 것을 확인
+    resp = api.get(
+        f'/tweet/timeline',
+        headers={'Authorization': access_token}
+    )
+    tweets = json.loads(resp.data.decode('utf-8'))
+    assert resp.status_code == 200
+    assert tweets['timeline'] == 1
