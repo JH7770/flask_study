@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, g
 from services import tweet
+from services import user
 from services.auth import login_required
 
 bp = Blueprint("tweet", __name__, url_prefix="/tweet")
@@ -70,8 +71,10 @@ def timeline():
     :return:
     """
     user_id = g.user_id
+    user_info = user.get_user_from_id(user_id)
     time_line = tweet.get_timeline(user_id)
     return jsonify({
+        'user_name': user_info['name'],
         'user_id': user_id,
         'timeline': time_line
     })
