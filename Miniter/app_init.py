@@ -23,8 +23,8 @@ def create_app(test_config=None):
     else:
         app.config.update(test_config)
 
-    # database connect
-    database = create_engine(app.config['DB_URL'], encoding='utf-8', max_overflow=0)
+    db_url = app.config['DB_URL'] if not test_config else test_config['DB_URL']
+    database = create_engine(db_url, encoding='utf-8', max_overflow=0)
     app.database = database
 
     # set Custom JSON Encoder
