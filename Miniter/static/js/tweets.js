@@ -27,10 +27,11 @@ $(document).ready(function () {
         }).done(function (msg) {
             var timeline = msg.timeline;
             var user_id = msg.user_id;
+            var user_name = msg.user_name;
 
-            if (user_id) {
+            if (user_name) {
                 $('.userId')
-                    .append(user_id);
+                    .append(user_name);
             }
             if (timeline) {
                 timeline.forEach(function (item) {
@@ -63,7 +64,7 @@ $(document).ready(function () {
 
         $.ajax({
             method: 'POST',
-            url: 'http://localhost:5000/tweet',
+            url: 'http://localhost:5000/tweet/tweet',
             headers: {
                 'Authorization': accessToken
             },
@@ -74,13 +75,14 @@ $(document).ready(function () {
         })
             .done(function (msg) {
                 console.log(msg)
+                window.location.reload()
             });
     });
 
     $('#follow').on('click', function () {
         $.ajax({
             method: 'POST',
-            url: 'http://localhost:5000/follow',
+            url: 'http://localhost:5000/tweet/follow',
             headers: {
                 'Authorization': accessToken
             },
@@ -97,7 +99,7 @@ $(document).ready(function () {
     $('#unfollow').on('click', function () {
         $.ajax({
             method: 'POST',
-            url: 'http://localhost:5000/unfollow',
+            url: 'http://localhost:5000/tweet/unfollow',
             headers: {
                 'Authorization': accessToken
             },

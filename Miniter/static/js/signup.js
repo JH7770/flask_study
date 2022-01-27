@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     $.ajax({
       method: "POST",
-      url: "http://localhost:5000/sign-up",
+      url: "http://localhost:5000/user/sign-up",
       data: JSON.stringify({
         "email"    : email,
         "name"     : name,
@@ -21,7 +21,7 @@ $(document).ready(function() {
     .done(function(msg) {
        console.log(msg)
        if (msg.email === email) {
-         window.location.href = './login.html';
+         window.location.href = './login';
        }
     });
   });

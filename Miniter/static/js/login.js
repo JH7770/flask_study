@@ -4,21 +4,21 @@ function createCookie(value) {
 
     document.cookie = 'token=' + value + '; expires=' + expirationDate + '; path=/';
 };
-$.ajax({
-    method: "POST",
-    url: "http://localhost:5000/user/login",
-    data: JSON.stringify({
-        "email": id,
-        "password": password
-    }),
-    contentType: 'application/json'
-})
-    .done(function (msg) {
-        if (msg.access_token) {
-            createCookie(msg.access_token);
-            window.location.href = './tweets';
-        }
-    });
+// $.ajax({
+//     method: "POST",
+//     url: "http://localhost:5000/user/login",
+//     data: JSON.stringify({
+//         "email": id,
+//         "password": password
+//     }),
+//     contentType: 'application/json'
+// })
+//     .done(function (msg) {
+//         if (msg.access_token) {
+//             createCookie(msg.access_token);
+//             window.location.href = './tweets';
+//         }
+//     });
 $(document).ready(function () {
     $("#loginForm").submit(function (e) {
         e.preventDefault();
