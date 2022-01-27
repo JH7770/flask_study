@@ -54,6 +54,8 @@ def unfollow():
     :return: 성공 여부
     """
     user_unfollow = request.json
+    if 'id' not in user_unfollow.keys():
+        user_unfollow['id'] = g.user_id
     try:
         tweet.insert_unfollow(user_unfollow)
     except Exception as e:
