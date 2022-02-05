@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request
 from flask import redirect
-from services.auth import check_access_token
+from .common import check_access_token
 
 bp = Blueprint("front", __name__, url_prefix="/")
 

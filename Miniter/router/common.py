@@ -3,8 +3,7 @@ import jwt
 from functools import wraps
 from flask import request, Response, current_app, g
 from datetime import datetime
-from .user import get_user_from_id
-
+from model import UserModel
 
 def check_access_token(access_token):
     try:
@@ -27,9 +26,10 @@ def login_required(f):
             payload = check_access_token(access_token)
             if payload is None:
                 return Response(status=401)
+            user_model = UserModel()
             user_id = payload['user_id']
             g.user_id = user_id
-            g.user = get_user_from_id(user_id) if user_id else None
+            g.user = user_model.get_user_from_id(user_id) if user_id else None
         else:
             return Response(status=401)
 

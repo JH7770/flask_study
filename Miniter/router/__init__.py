@@ -1,11 +1,11 @@
-from . import r_front
-from . import r_user
-from . import r_tweet
-from . import r_index
+from . import router_front
+from . import router_user
+from . import router_tweet
+from . import router_index
 
 blueprints = [
-    r_front.bp,
-    r_user.bp,
-    r_tweet.bp,
-    r_index.bp
+    router_front.bp,
+    router_user.bp,
+    router_tweet.bp,
+    router_index.bp
 ]

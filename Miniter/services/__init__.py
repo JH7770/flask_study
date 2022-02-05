@@ -1,3 +1,3 @@
-from . import tweet
-from . import user
+from . import service_tweet
+from . import service_user
 

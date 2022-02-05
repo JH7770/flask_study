@@ -161,6 +161,25 @@ def test_unauthorized(api):
     )
     assert resp.status_code == 401
 
+def test_login(api):
+    new_user = {
+        'email': 'test@test.test',
+        'password': 'test',
+        'name': "test",
+        'profile': 'test'
+    }
+
+    # login
+    resp = api.post(
+        '/user/login',
+        data=json.dumps({
+            'email': new_user['email'],
+            'password': new_user['password'],
+        }),
+        content_type='application/json'
+    )
+    assert resp.status_code == 200
+
 
 def test_tweet(api):
     # test user 생성
@@ -180,6 +199,7 @@ def test_tweet(api):
         }),
         content_type='application/json'
     )
+    print(resp.data)
     resp_json = json.loads(resp.data.decode('utf-8'))
     access_token = resp_json['access_token']
 
@@ -251,8 +271,9 @@ def test_follow_and_unfollow(api):
         f'/tweet/timeline',
         headers={'Authorization': access_token}
     )
-    tweets = json.loads(resp.data.decode('utf-8'))
     assert resp.status_code == 200
+
+    tweets = json.loads(resp.data.decode('utf-8'))
     assert tweets == {
         'user_name': 'name2',
         'user_id': 1,
@@ -277,8 +298,9 @@ def test_follow_and_unfollow(api):
         f'/tweet/timeline',
         headers={'Authorization': access_token}
     )
-    tweets = json.loads(resp.data.decode('utf-8'))
     assert resp.status_code == 200
+
+    tweets = json.loads(resp.data.decode('utf-8'))
     assert tweets == {
         'user_name': 'name2',
         'user_id': 1,
