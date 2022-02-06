@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 from flask import current_app, jsonify, g, send_file
 from model import UserModel
+from common import s3
 
 from werkzeug.utils import secure_filename
 
@@ -69,8 +70,12 @@ def upload_profile_picture(request):
 
 
 def get_profile_picture(request, user_id):
-    user_model = UserModel()
-    profile_picture_path = user_model.get_profile_picture_path(user_id)
+    try:
+        user_model = UserModel()
+        profile_picture_path = user_model.get_profile_picture_path(user_id)
+        s3_connection = s3.s3_connection(current_app)
+        
+
 
     if profile_picture_path:
         return send_file(profile_picture_path)
