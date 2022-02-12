@@ -103,6 +103,7 @@ def test_login(api):
     :param api: testClient
     :return:
     """
+    """
     login_user = {
         'email': 'test@test.test',
         'password': 'test'
