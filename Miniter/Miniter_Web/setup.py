@@ -3,10 +3,12 @@ from app_init import create_app
 from flask_twisted import Twisted
 from twisted.python import log
 
+import sys
+
 if __name__ == "__main__":
     app = create_app()
     twisted = Twisted(app)
 
     manager = Manager(app)
-
+    log.startLogging(sys.stdout)
     manager.run()
