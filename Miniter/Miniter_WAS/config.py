@@ -1,7 +1,8 @@
+import os
 db = {
     'user': 'root',
     'password': 'ansdjdhkd1',
-    'host': 'localhost',
+    'host': os.environ.get('DB_HOST'),
     'port': 3306,
     'database': 'miniter'
 }

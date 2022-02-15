@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     $.ajax({
       method: "POST",
-      url: "http://localhost:5000/user/sign-up",
+      url: "http://"+restApiURl+"/user/sign-up",
       data: JSON.stringify({
         "email"    : email,
         "name"     : name,

@@ -7,9 +7,6 @@ def hello_world():
     return 'pong'
 
 @bp.route('/', methods=['GET'])
-def hello_world():
+def index():
     return 'Hello, This is Miniter WAS Server'
 
-@bp.route('/health', methods=['GET'])
-def hello_world():
-    return '', 200

@@ -4,7 +4,7 @@ import pytest
 import bcrypt
 
 from flask import json
-from config import test_config
+from .config import test_config
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 

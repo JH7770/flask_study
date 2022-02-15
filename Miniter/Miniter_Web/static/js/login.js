@@ -4,21 +4,7 @@ function createCookie(value) {
 
     document.cookie = 'token=' + value + '; expires=' + expirationDate + '; path=/';
 };
-// $.ajax({
-//     method: "POST",
-//     url: "http://localhost:5000/user/login",
-//     data: JSON.stringify({
-//         "email": id,
-//         "password": password
-//     }),
-//     contentType: 'application/json'
-// })
-//     .done(function (msg) {
-//         if (msg.access_token) {
-//             createCookie(msg.access_token);
-//             window.location.href = './tweets';
-//         }
-//     });
+
 $(document).ready(function () {
     $("#loginForm").submit(function (e) {
         e.preventDefault();
@@ -28,7 +14,7 @@ $(document).ready(function () {
 
         $.ajax({
             method: "POST",
-            url: "http://localhost:5000/user/login",
+            url: "http://"+restApiURl+"/user/login",
             data: JSON.stringify({
                 "email": id,
                 "password": password
@@ -39,6 +25,9 @@ $(document).ready(function () {
                 if (msg.access_token) {
                     createCookie(msg.access_token);
                     window.location.href = './tweets';
+                }
+                else{
+                    console.log("err")
                 }
             });
     });

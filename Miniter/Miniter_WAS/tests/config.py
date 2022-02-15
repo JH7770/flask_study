@@ -5,10 +5,11 @@
 #     'port': 3306,
 #     'database': 'tset_db'
 # }
+import os
 test_db = {
     'user': 'root',
     'password': 'ansdjdhkd1',
-    'host': 'localhost',
+    'host':  os.environ.get('DB_HOST'),
     'port': 3306,
     'database': 'test'
 }

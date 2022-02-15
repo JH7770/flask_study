@@ -20,7 +20,7 @@ $(document).ready(function () {
     if (accessToken) {
         $.ajax({
             method: 'GET',
-            url: 'http://localhost:5000/tweet/timeline',
+            url:  "http://"+ restApiURl+"/tweet/timeline",
             headers: {
                 'Authorization': accessToken
             }

@@ -9,6 +9,6 @@ if __name__ == "__main__":
     app = create_app()
     twisted = Twisted(app)
     app.logger.info(f"Running the app...")
-
+    log.startLogging(sys.stdout)
     manager = Manager(app)
     manager.run()
